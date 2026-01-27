@@ -1,0 +1,35 @@
+#!/bin/sh
+
+MAX_PROCESSES=4
+
+# 生成所有待执行的命令
+
+logfile="$HOME/1ton/ReConstruction/DirectionReconstruction/TemplateGen/MCdata/preAnalysis.log"
+rm $logfile
+
+mkdir -p /mnt/stage/wangyp/Simulation/new1ton/water/templates/PreAnalysis_plate
+
+
+generate_commands() {
+    for i in $(seq 0 9); do
+        for j in $(seq 0 100); do
+            if [ "$j" -eq 0 ]; then
+                filename="/mnt/stage/wangyp/Simulation/new1ton/water/templates/Rawdata_plate/map${i}_muon.root"
+            else
+                filename="/mnt/stage/wangyp/Simulation/new1ton/water/templates/Rawdata_plate/map${i}_muon_${j}.root"
+            fi
+
+            prepath="/mnt/stage/wangyp/Simulation/new1ton/water/templates/PreAnalysis_plate/run${i}_${j}.root"
+
+            if [ -e "${filename}" ]; then 
+                echo "处理文件: $filename"; 
+                ./PreAnalysisMC "$filename" "$prepath"; 
+            else 
+                echo "文件未找到: $filename"; 
+            fi
+        done
+    done
+} > $logfile 
+
+# 使用 xargs 并行执行命令
+generate_commands | xargs -P $MAX_PROCESSES -I {} sh -c "{}"

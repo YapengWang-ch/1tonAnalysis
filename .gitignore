@@ -39,3 +39,16 @@
 
 # debug information files
 *.dwo
+
+# run log
+*.log
+
+# output data
+*/output/*
+*/Output/*
+
+# root data files
+*.root
+
+# build directory
+*/build/*

@@ -58,7 +58,8 @@ int plotentrych(const char* filepath,const char* outputpath, const char* title, 
         }
           if (j>=0){
           // ID=(*ChannelId)[j];
-            float baseline=WaveForm_BaseLine(waveform,j*FormLength,(j+1)*FormLength);
+            float baseline;
+            WaveForm_BaseLine(baseline,waveform,j*FormLength,(j+1)*FormLength);
             vector<int> peaks =WaveForm_PeakFind(waveform,j*FormLength,(j+1)*FormLength,baseline,5);
             TH1F *hwave = (TH1F*)gROOT->FindObject("hwave");
             if (hwave) hwave->Delete();
@@ -72,7 +73,7 @@ int plotentrych(const char* filepath,const char* outputpath, const char* title, 
                 hwave->SetTitle(Form("run%d trigger%d ch%d",RunNo,TriggerNo,ID));
             }
             hwave->SetXTitle("time [ns]");
-            hwave->SetYTitle("voltage [mV]");
+            hwave->SetYTitle("voltage [bins]");
             hwave->Draw("");
             c1->SaveAs(outputpath);
             hwave->Delete();
@@ -151,7 +152,7 @@ int plotentry(const char* filepath, const char* outputpath, const char* title,  
 
     float q;
     TCanvas* c1=new TCanvas();
-    float baseline;
+    float baseline=1000;
     // c1->SetCanvasSize(1600,1200);
     int EN=Redata->GetEntries();
     TH1F *hwave[60];
@@ -168,10 +169,8 @@ int plotentry(const char* filepath, const char* outputpath, const char* title,  
             int ID=(*ChannelId)[j];
             hwave[j] = new TH1F(Form("hwave%02d",ID), title, FormLength, 0, FormLength);
             hwave[j]->SetFillStyle(0); // 添加这行
-            float bb=WaveForm_BaseLine(waveform,j*FormLength,(j+1)*FormLength);
-            if(bb>0){
-              baseline=bb;
-            }
+            float baseline=1000;
+            WaveForm_BaseLine(baseline,waveform,j*FormLength,(j+1)*FormLength);
             vector<int> peaks =WaveForm_PeakFind(waveform,j*FormLength,(j+1)*FormLength,baseline,5);
             for(int k=j*FormLength ; k < (j+1)*FormLength ; k++){
                 hwave[j]->SetBinContent(k-j*FormLength+1,(*waveform)[k]-baseline);
@@ -199,7 +198,7 @@ int plotentry(const char* filepath, const char* outputpath, const char* title,  
                 hwave[0]->SetTitle(Form("run%d trigger%d",RunNo,TriggerNo));
             }
             hwave[0]->SetXTitle("time [ns]");
-            hwave[0]->SetYTitle("voltage-baseline [mV]");
+            hwave[0]->SetYTitle("voltage-baseline [bins]");
             int maxpeak=0;
                 for (size_t i=0; i<peaklist.size(); i++){
                     if (maxpeak>peaklist[i]){
@@ -212,111 +211,6 @@ int plotentry(const char* filepath, const char* outputpath, const char* title,  
                 hwave[j]->Draw("SAME");
             }
             lg->Draw("SAME");
-            c1->SaveAs(outputpath);
-            delete c1;
-    
-    delete Redata;
-    return 0;
-}
-
-int plot_all(const char* filepath, const char* outputpath, const char* title,  int i){
-    Int_t ChannelN=60;
-    Int_t FormLength;
-    TChain *Redata = new TChain("Readout","Readout");
-    Redata->Add(filepath);
-
-    Int_t RunNo;
-    Int_t TriggerNo;
-    Int_t TriggerType;
-    Int_t DetectorID;
-    vector<unsigned short>* waveform=nullptr;
-    Int_t second;
-    Int_t nanosecond;
-    vector<unsigned short>* ChannelId=nullptr;
-    Redata->SetBranchAddress("Waveform",&waveform);
-    Redata->SetBranchAddress("ChannelId",&ChannelId);
-    Redata->SetBranchAddress("Sec",&second);
-    Redata->SetBranchAddress("RunNo",&RunNo);
-    Redata->SetBranchAddress("TriggerNo",&TriggerNo);
-    Redata->SetBranchAddress("TriggerType",&TriggerType);
-    Redata->SetBranchAddress("DetectorID",&DetectorID);
-    Redata->SetBranchAddress("NanoSec",&nanosecond);
-
-    float q;
-    TCanvas* c1=new TCanvas();
-    float baseline;
-    // c1->SetCanvasSize(1600,1200);
-    int EN=Redata->GetEntries();
-    TH1F *hwave[60];
-    TH1F *hwave_av[60];
-    std::vector<float> peaklist;
-    TLegend *lg=new TLegend(0.7,0.1,0.9,0.5);
-    if(EN<=i){
-      printf("Entry %d no exist.\n",i);
-      return 1;
-    }
-        Redata->GetEntry(i);
-        ChannelN=ChannelId->size();
-        c1->SetCanvasSize(1600,1200);
-        FormLength=waveform->size()/ChannelN;
-        for (int j=0; j<ChannelN; j++){
-            int ID=(*ChannelId)[j];
-            hwave[j] = new TH1F(Form("hwave%02d",ID), title, FormLength, 0, FormLength);
-            hwave[j]->SetFillStyle(0);
-            hwave_av[ID] = new TH1F(Form("hwave_av%02d",ID), Form("run%d trigger%d ch%d",RunNo,TriggerNo,ID), FormLength, 0, FormLength);
-            hwave_av[ID]->SetFillStyle(0); 
-            float bb=WaveForm_BaseLine(waveform,j*FormLength,(j+1)*FormLength);
-            if(bb>0){
-              baseline=bb;
-            }
-            vector<int> peaks =WaveForm_PeakFind(waveform,j*FormLength,(j+1)*FormLength,baseline,5);
-            for(int k=j*FormLength ; k < (j+1)*FormLength ; k++){
-                hwave[j]->SetBinContent(k-j*FormLength+1,(*waveform)[k]-baseline);
-                hwave_av[ID]->SetBinContent(k-j*FormLength+1,(*waveform)[k]);
-            }
-            hwave[j]->SetLineColor(j/9*10+j%9+1);//skip the transparement clors
-            // hwave[j]->SetFillStyle(0);
-            lg->AddEntry(hwave[j],Form("ch%02d: %.1f",ID,baseline),"l");
-
-            printf("ch %02d: %s",ID,Form("baseline %.2f, ",baseline));
-            if (!peaks.empty()){
-                printf("peaks :");
-                for (int ll=0; ll<peaks.size(); ll++){
-                  printf(" %d/%.2f",peaks[ll]-j*FormLength,baseline-(*waveform)[peaks[ll]]);
-                  peaklist.push_back((*waveform)[peaks[ll]]-baseline);
-                }  
-                printf("\n");
-            }else{
-                printf("peaks not found\n");
-            }
-
-        }       
-            gStyle->SetOptStat(0);
-            hwave[0]->SetTitle(title);
-            if (title == nullptr){
-                hwave[0]->SetTitle(Form("run%d trigger%d",RunNo,TriggerNo));
-            }
-            hwave[0]->SetXTitle("time [ns]");
-            hwave[0]->SetYTitle("voltage-baseline [mV]");
-            int maxpeak=0;
-                for (size_t i=0; i<peaklist.size(); i++){
-                    if (maxpeak>peaklist[i]){
-                        maxpeak=peaklist[i];
-                    }
-                }
-            hwave[0]->SetAxisRange(maxpeak*1.2,-maxpeak*0.3,"Y");
-
-            hwave[0]->Draw();
-            for(int j=1; j<ChannelN; j++){
-                hwave[j]->Draw("SAME");
-            }
-            lg->Draw("SAME");
-            TMultiDraw mdraw;
-            mdraw.Add(c1);
-            for (auto* hist : histos) {
-                mdraw.Add(hist, "HIST");  // 添加对象及绘图选项
-            }
-            mdraw.SavePDF("output.pdf");  
             c1->SaveAs(outputpath);
             delete c1;
     
@@ -330,8 +224,23 @@ int plotTrigger(const char* filepath, const char* outputpath, const char* title,
     TChain *Redata = new TChain("Readout","Readout");
     Redata->Add(filepath);
 
+    // Int_t RunNo;
     Int_t TriggerNo;
+    // Int_t TriggerType;
+    // Int_t DetectorID;
+    // vector<unsigned short>* waveform=nullptr;
+    // Int_t second;
+    // Int_t nanosecond;
+    // vector<unsigned short>* ChannelId=nullptr;
+    // Redata->SetBranchAddress("Waveform",&waveform);
+    // Redata->SetBranchAddress("ChannelId",&ChannelId);
+    // Redata->SetBranchAddress("Sec",&second);
+    // Redata->SetBranchAddress("RunNo",&RunNo);
     Redata->SetBranchAddress("TriggerNo",&TriggerNo);
+    // Redata->SetBranchAddress("TriggerType",&TriggerType);
+    // Redata->SetBranchAddress("DetectorID",&DetectorID);
+    // Redata->SetBranchAddress("NanoSec",&nanosecond);
+
 
     int EN=Redata->GetEntries();
 
@@ -361,8 +270,22 @@ int plotTriggerch(const char* filepath,const char* outputpath, const char* title
     TChain *Redata = new TChain("Readout","Readout");
     Redata->Add(filepath);
 
+    // Int_t RunNo;
     Int_t TriggerNo;
+    // Int_t TriggerType;
+    // Int_t DetectorID;
+    // vector<unsigned short>* waveform=nullptr;
+    // Int_t second;
+    // Int_t nanosecond;
+    // vector<unsigned short>* ChannelId=nullptr;
+    // Redata->SetBranchAddress("Waveform",&waveform);
+    // Redata->SetBranchAddress("ChannelId",&ChannelId);
+    // Redata->SetBranchAddress("Sec",&second);
+    // Redata->SetBranchAddress("RunNo",&RunNo);
     Redata->SetBranchAddress("TriggerNo",&TriggerNo);
+    // Redata->SetBranchAddress("TriggerType",&TriggerType);
+    // Redata->SetBranchAddress("DetectorID",&DetectorID);
+    // Redata->SetBranchAddress("NanoSec",&nanosecond);
 
 
     int EN=Redata->GetEntries();

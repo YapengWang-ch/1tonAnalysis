@@ -50,7 +50,8 @@ int plotentrych(const char* filepath,const char* outputpath, const char* title, 
         // ChannelN=ChannelId->size();
         FormLength=waveform->size();
           // ID=(*ChannelId)[j];
-            float baseline=WaveForm_BaseLine(waveform,0,FormLength);
+            float baseline=1000;
+            WaveForm_BaseLine(baseline,waveform,0,FormLength);
             vector<int> peaks =WaveForm_PeakFind(waveform,0,FormLength,baseline,5);
             TH1F *hwave = (TH1F*)gROOT->FindObject("hwave");
             if (hwave) hwave->Delete();

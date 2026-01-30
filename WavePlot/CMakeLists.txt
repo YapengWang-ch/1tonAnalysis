@@ -18,7 +18,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 ROOT_GENERATE_DICTIONARY(G__PeakInfo ${CMAKE_CURRENT_SOURCE_DIR}/include/PeakInfo.h LINKDEF ${CMAKE_CURRENT_SOURCE_DIR}/include/LinkDef.h)
 
 # 添加可执行文件
-add_executable(plot src/WavePlot2.C src/PeakInfo.cpp G__PeakInfo.cxx)
+add_executable(plot src/WavePlot.C src/PeakInfo.cpp G__PeakInfo.cxx)
 add_executable(plotMC src/WavePlotMC.C src/PeakInfo.cpp G__PeakInfo.cxx)
 add_executable(plotS src/WavePlot_s.C src/PeakInfo.cpp G__PeakInfo.cxx)
 add_executable(Eventdata src/Eventdata.C src/PeakInfo.cpp G__PeakInfo.cxx)

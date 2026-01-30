@@ -144,7 +144,8 @@ int GetEventData(const char* filepath, const char* outputpath, const char* title
         int channel = ChannelId->at(i);
         // cout <<"processing ch "<<channel<<endl;
         // cout <<"calculating baseline"<<endl;
-        double baseline = WaveForm_BaseLine(waveform,i*FormLength, (i+1)*FormLength);
+        float baseline = 1000;
+        WaveForm_BaseLine(baseline,waveform,i*FormLength, (i+1)*FormLength);
         // cout <<"Analysising peaks"<<endl;
         std::vector<PeakInfo> peaks = WaveForm_GetPeak(channel,waveform,i*FormLength, (i+1)*FormLength, baseline);
 

@@ -59,7 +59,8 @@ int plotentrych(const char* filepath,const char* outputpath, const char* title, 
           if (j>=0){
           // ID=(*ChannelId)[j];
             vector<unsigned short> temp_wave(waveform->begin() + j*FormLength, waveform->begin() + (j+1)*FormLength);
-            float baseline=WaveForm_BaseLine(&temp_wave,0,FormLength);
+            float baseline=1000;
+            WaveForm_BaseLine(baseline,&temp_wave,0,FormLength);
             vector<int> peaks =WaveForm_PeakFind(&temp_wave,0,FormLength,baseline,5);
             TH1F *hwave = (TH1F*)gROOT->FindObject("hwave");
             if (hwave) hwave->Delete();
@@ -170,10 +171,7 @@ int plotentry(const char* filepath, const char* outputpath, const char* title,  
             hwave[j] = new TH1F(Form("hwave%02d",ID), title, FormLength, 0, FormLength);
             hwave[j]->SetFillStyle(0); // 添加这行
             vector<unsigned short> temp_wave(waveform->begin() + j*FormLength, waveform->begin() + (j+1)*FormLength);
-            float bb=WaveForm_BaseLine(&temp_wave,0,FormLength);
-            if(bb>0){
-              baseline=bb;
-            }
+            WaveForm_BaseLine(baseline,&temp_wave,0,FormLength);
             vector<int> peaks =WaveForm_PeakFind(&temp_wave,0,FormLength,baseline,5);
             for(int k=j*FormLength ; k < (j+1)*FormLength ; k++){
                 hwave[j]->SetBinContent(k-j*FormLength+1,(*waveform)[k]-baseline);

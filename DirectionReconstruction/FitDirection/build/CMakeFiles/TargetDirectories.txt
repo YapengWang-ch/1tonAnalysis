@@ -1,0 +1,16 @@
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/FitDirection/build/CMakeFiles/G__ChannelInfo.dir
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/FitDirection/build/CMakeFiles/ChannelInfoLib.dir
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/FitDirection/build/CMakeFiles/PreAnalysisData.dir
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/FitDirection/build/CMakeFiles/PreAnalysisMC.dir
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/FitDirection/build/CMakeFiles/FitMCLarge.dir
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/FitDirection/build/CMakeFiles/FitMC_AA.dir
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/FitDirection/build/CMakeFiles/FitMC_CT.dir
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/FitDirection/build/CMakeFiles/FitDataLarge.dir
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/FitDirection/build/CMakeFiles/FitData_AA.dir
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/FitDirection/build/CMakeFiles/FitData_CT.dir
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/FitDirection/build/CMakeFiles/GetMCDirection.dir
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/FitDirection/build/CMakeFiles/GetDataDirection.dir
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/FitDirection/build/CMakeFiles/AngularResolution.dir
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/FitDirection/build/CMakeFiles/plot_k_Resolution.dir
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/FitDirection/build/CMakeFiles/edit_cache.dir
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/FitDirection/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,14 @@
+{ decls }
+namespace std {  }
+
+[ libChannelInfo.so ]
+# List of selected classes
+class ChannelInfo_t
+class DataOut
+class FitResult
+class Readin
+class node
+class vector<ChannelInfo_t>
+class vector<FitResult>
+header include/ChannelInfo.h
+header MyStructs.h

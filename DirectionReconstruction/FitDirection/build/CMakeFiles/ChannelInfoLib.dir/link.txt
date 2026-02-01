@@ -1,0 +1,1 @@
+/opt/gentoo/usr/bin/c++ -fPIC  -O2 -pipe -pipe -fsigned-char -pthread -shared -Wl,-soname,libChannelInfoLib.so -o libChannelInfoLib.so CMakeFiles/ChannelInfoLib.dir/G__ChannelInfo.cxx.o   -L/opt/gentoo/usr/lib64/root

@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/TemplateGen/include/ChannelInfo.h
+vector
+-
+
+/home/wangyp/1ton/WaterPhaseII/DirectionReconstruction/TemplateGen/include/LinkDef.h
+

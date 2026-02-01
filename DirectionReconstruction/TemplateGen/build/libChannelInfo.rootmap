@@ -1,0 +1,8 @@
+{ decls }
+namespace std {  }
+
+[ libChannelInfo.so ]
+# List of selected classes
+class ChannelInfo_t
+class vector<ChannelInfo_t>
+header include/ChannelInfo.h

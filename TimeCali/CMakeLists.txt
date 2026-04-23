@@ -25,43 +25,27 @@ include_directories($ENV{JSAPSYS} ${CMAKE_CURRENT_SOURCE_DIR}/include)
 ROOT_GENERATE_DICTIONARY(G__PeakInfo ctools.h LINKDEF include/LinkDef.h)
 
 # 添加可执行文件
-add_executable(getPeaks src/GetPeaks.cpp src/ctools.cpp G__PeakInfo.cxx)
-add_executable(TimeCali src/TimeCali.cpp src/ctools.cpp G__PeakInfo.cxx)
-add_executable(TimeCali2 src/TimeCali2.cpp src/ctools.cpp G__PeakInfo.cxx)
-add_executable(TimeCali2w src/TimeCali2w.cpp src/ctools.cpp G__PeakInfo.cxx)
-add_executable(TimeCali2w_high src/TimeCali2w_high.cpp src/ctools.cpp G__PeakInfo.cxx)
-add_executable(plotDirection src/plotuniform.cpp src/ctools.cpp G__PeakInfo.cxx)
+add_executable(getPeaks src/GetPeaks.cpp src/ctools.cpp G__PeakInfo.cxx) // extract peak info from raw data
+# add_executable(TimeCali src/TimeCali.cpp src/ctools.cpp G__PeakInfo.cxx) // time calibration using independent peak info , 
+add_executable(TimeCali2 src/TimeCali2.cpp src/ctools.cpp G__PeakInfo.cxx) // time calibration using peak ref certain channel, hard coded, for risetime error check. 
+add_executable(TimeCali2w src/TimeCali2w.cpp src/ctools.cpp G__PeakInfo.cxx) // time calibration using combined peak info, most accurate, for final result.
 
-
-add_executable(getPeaksMC src/GetPeaks_MC.cpp src/ctools.cpp G__PeakInfo.cxx)
-add_executable(getPeaksMC_ReconR src/GetPeaks_MC_ReconR.cpp src/ctools.cpp $ENV{JSAPSYS}/Utils/JPUtils.cpp G__PeakInfo.cxx)
-add_executable(TimeCaliMC src/TimeCali_MC.cpp src/ctools.cpp G__PeakInfo.cxx)
-
-
-add_executable(getPeaks_z src/GetPeaks_z.cpp src/ctools.cpp G__PeakInfo.cxx)
-add_executable(TimeCali_z src/TimeCali_z.cpp src/ctools.cpp G__PeakInfo.cxx)
 
 # add_executable(TQmap src/TQmap.cpp src/ctools.cpp G__PeakInfo.cxx)
-add_executable(TQmapW src/TQmapWalkpro.cpp src/ctools.cpp G__PeakInfo.cxx)
+# add_executable(TQmapW src/TQmapWalkpro.cpp src/ctools.cpp G__PeakInfo.cxx)
 # add_executable(TWfit src/TWfit.cpp src/ctools.cpp G__PeakInfo.cxx)
 # add_executable(TWfitL src/TWfitL.cpp src/ctools.cpp G__PeakInfo.cxx)
 
 # 链接库
 target_link_libraries(getPeaks ${ROOT_LIBRARIES})
-target_link_libraries(TimeCali ${ROOT_LIBRARIES})
+# target_link_libraries(TimeCali ${ROOT_LIBRARIES})
 target_link_libraries(TimeCali2 ${ROOT_LIBRARIES})
 target_link_libraries(TimeCali2w ${ROOT_LIBRARIES})
-target_link_libraries(TimeCali2w_high ${ROOT_LIBRARIES})
-target_link_libraries(plotDirection ${ROOT_LIBRARIES})
+# target_link_libraries(TimeCali2w_high ${ROOT_LIBRARIES})
+# target_link_libraries(plotDirection ${ROOT_LIBRARIES})
 
-target_link_libraries(getPeaksMC ${ROOT_LIBRARIES})
-target_link_libraries(getPeaksMC_ReconR ${ROOT_LIBRARIES})
-target_link_libraries(TimeCaliMC ${ROOT_LIBRARIES})
-
-target_link_libraries(getPeaks_z ${ROOT_LIBRARIES})
-target_link_libraries(TimeCali_z ${ROOT_LIBRARIES})
 
 # target_link_libraries(TQmap ${ROOT_LIBRARIES})
-target_link_libraries(TQmapW ${ROOT_LIBRARIES})
+# target_link_libraries(TQmapW ${ROOT_LIBRARIES})
 # target_link_libraries(TWfit ${ROOT_LIBRARIES})
 # target_link_libraries(TWfitL ${ROOT_LIBRARIES})

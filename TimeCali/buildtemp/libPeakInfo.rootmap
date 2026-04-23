@@ -1,8 +1,0 @@
-{ decls }
-namespace std {  }
-
-[ libPeakInfo.so ]
-# List of selected classes
-class PeakInfo
-class vector<PeakInfo>
-header ctools.h
